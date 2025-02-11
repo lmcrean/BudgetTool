@@ -1,10 +1,17 @@
 import axios from 'axios';
 
-export const apiClient = axios.create({
-  baseURL: '',  // Empty because we're using relative URLs with the Vite proxy
+// Determine the base URL based on the environment
+const baseURL = import.meta.env.PROD
+  ? import.meta.env.VITE_BACKEND_URL || 'https://budget-tool-backend-fkfbg9bjbncvd5hb.uksouth.1.azurewebsites.net'
+  : import.meta.env.VITE_BACKEND_URL || 'https://localhost:5001';
+
+// Create axios instance with configuration
+const apiClient = axios.create({
+  baseURL,
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true, // Important for CORS with credentials
 });
 
 // Add a request interceptor for handling auth tokens if needed
@@ -25,7 +32,19 @@ apiClient.interceptors.response.use(
     // Handle specific error cases here
     if (error.response?.status === 401) {
       // Handle unauthorized
+      console.error('Unauthorized request:', error);
+    } else if (error.response?.status === 403) {
+      // Handle forbidden
+      console.error('Forbidden request:', error);
+    } else if (error.response?.status === 404) {
+      // Handle not found
+      console.error('Resource not found:', error);
+    } else {
+      // Handle other errors
+      console.error('API request failed:', error);
     }
     return Promise.reject(error);
   }
-); 
+);
+
+export default apiClient; 
