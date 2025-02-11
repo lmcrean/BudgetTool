@@ -19,6 +19,22 @@ namespace BudgetTool2
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowFrontend",
+                    builder =>
+                    {
+                        builder
+                            .WithOrigins(
+                                "https://budget-tool-frontend-dubuhsc9aeezgj0.uksouth.1.azurewebsites.net",
+                                "http://localhost:5173" // Local development
+                            )
+                            .AllowAnyMethod()
+                            .AllowAnyHeader()
+                            .AllowCredentials();
+                    });
+            });
+
             services.AddControllersWithViews();
 
             // In production, the React files will be served from this directory
@@ -47,6 +63,9 @@ namespace BudgetTool2
             app.UseSpaStaticFiles();
 
             app.UseRouting();
+
+            // Add CORS middleware before routing and endpoints
+            app.UseCors("AllowFrontend");
 
             app.UseEndpoints(endpoints =>
             {
