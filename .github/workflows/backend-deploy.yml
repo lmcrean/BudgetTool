@@ -10,6 +10,7 @@ env:
   AZURE_WEBAPP_NAME: budget-tool-backend
   AZURE_WEBAPP_PACKAGE_PATH: '.'
   DOTNET_VERSION: '9.0.x'
+  NODE_VERSION: '20.x'
 
 jobs:
   build-and-deploy:
@@ -22,6 +23,21 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        cache-dependency-path: './frontend/package-lock.json'
+
+    - name: Install Frontend Dependencies
+      working-directory: ./frontend
+      run: npm install --legacy-peer-deps
+    
+    - name: Build Frontend
+      working-directory: ./frontend
+      run: npm run build
     
     - name: Build with dotnet
       run: dotnet build --configuration Release
