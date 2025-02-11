@@ -40,6 +40,32 @@ jobs:
     - name: Build Frontend
       working-directory: ./frontend
       run: npm run build
+
+    - name: Prepare Frontend for Deployment
+      working-directory: ./frontend
+      run: |
+        Copy-Item package.json dist/
+        Copy-Item package-lock.json dist/
+        New-Item -Path dist/server.js -ItemType File -Value @'
+        const express = require('express');
+        const path = require('path');
+        const app = express();
+        const port = process.env.PORT || 3000;
+        
+        app.use(express.static(path.join(__dirname)));
+        
+        app.get('*', (req, res) => {
+          res.sendFile(path.join(__dirname, 'index.html'));
+        });
+        
+        app.listen(port, () => {
+          console.log(`Server running on port ${port}`);
+        });
+        '@
+        
+    - name: Install Production Dependencies
+      working-directory: ./frontend/dist
+      run: npm install --production --legacy-peer-deps
       
     - name: Upload frontend artifact
       uses: actions/upload-artifact@v4
@@ -122,4 +148,4 @@ jobs:
         with:
           app-name: ${{ env.AZURE_WEBAPP_FRONTEND_NAME }}
           slot-name: 'Production'
-          package: . 
+          package: frontend-app 
