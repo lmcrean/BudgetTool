@@ -9,6 +9,8 @@ on:
 env:
   DOTNET_VERSION: '9.x'
   NODE_VERSION: '20.x'
+  AZURE_WEBAPP_FRONTEND_NAME: 'budget-tool-frontend'
+  AZURE_WEBAPP_BACKEND_NAME: 'budget-tool-backend'
 
 jobs:
   build:
@@ -87,7 +89,7 @@ jobs:
         id: deploy-backend
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'budget-tool-backend'
+          app-name: ${{ env.AZURE_WEBAPP_BACKEND_NAME }}
           slot-name: 'Production'
           package: .
 
@@ -118,6 +120,6 @@ jobs:
         id: deploy-frontend
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'budget-tool-frontend'
+          app-name: ${{ env.AZURE_WEBAPP_FRONTEND_NAME }}
           slot-name: 'Production'
           package: . 
