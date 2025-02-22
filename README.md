@@ -15,3 +15,16 @@ The goal of this project is to establish a network test with 4 buttons that:
  - 'Deleted user RandomUser_23023'
 
 
+# Tech Stack - Backend
+
+- .NET 7
+- C#
+- ASP.NET Core
+- Azure
+
+# Tech Stack - Frontend
+
+- Vite
+- React
+- TypeScript
+- Playwright
