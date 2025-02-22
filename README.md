@@ -5,9 +5,8 @@ Network Test with .NET and C#
 The goal of this project is to establish a network test with 4 buttons that:
 
 1. Confirm 'Api is working!' message.
-2. Confirm Azure Health Check is working with 'Connected to Azure' message.
-3. Confirm JWT generation with generated JWT token.
-4. Confirm User Lifeycle is functioning with the following messages:
+2. Confirm Azure Health Check is working with 'Connected to Azure and Database' message.
+3. Confirm User Lifeycle is functioning with the following messages:
  - 'Signed up as RandomUser_23023'
  - 'Logged in as RandomUser_23023'
  - 'Logged out as RandomUser_23023'
@@ -21,6 +20,11 @@ The goal of this project is to establish a network test with 4 buttons that:
 - C#
 - ASP.NET Core
 - Azure
+- ASP.NET Core Identity
+- Entity Framework Core
+- SQL Server/Azure SQL Database
+- Azure Key Vault (for secrets management)
+- Azure App Service (for hosting)
 
 # Tech Stack - Frontend
 
