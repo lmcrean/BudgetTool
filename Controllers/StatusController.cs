@@ -7,7 +7,7 @@ namespace BudgetTool2.Controllers
     public class StatusController : ControllerBase
     {
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult GetStatus()
         {
             return Ok("Api is working!");
         }
