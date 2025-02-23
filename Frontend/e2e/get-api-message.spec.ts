@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test.describe('GetApiMessage Component', () => {
     test.beforeEach(async ({ page }) => {
         // Navigate to the development server where the component is rendered
-        await page.goto('http://localhost:5173');
+        await page.goto('/');
     });
 
     test('should display API message after clicking button', async ({ page }) => {
@@ -34,7 +34,7 @@ test.describe('GetApiMessage Component', () => {
 
     test('should show error message when API request fails', async ({ page }) => {
         // Arrange - Navigate to page where API won't be available
-        await page.goto('http://localhost:5173');
+        await page.goto('/');
         const button = page.getByTestId('api-message-button');
         
         // Act - Trigger the API call
