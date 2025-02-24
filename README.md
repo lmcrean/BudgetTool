@@ -11,12 +11,17 @@ The goal of this project is to establish a network test with 4 buttons that:
  - 'Logged in as RandomUser_23023'
  - 'Deleted user RandomUser_23023'
 
+## Project Structure
 
-# Tech Stack - Backend
+This project is organized into two main directories:
+
+- **Backend**: Contains the ASP.NET Core API
+- **Frontend**: Contains the React/Vite frontend application
+
+## Tech Stack - Backend
 - .NET 9.0 (9.0.0-preview.1.24081.5)
    - Microsoft.AspNetCore.SpaProxy Version="9.0.0-preview.1.24081.5"
    - Microsoft.AspNetCore.SpaServices.Extensions Version="9.0.0-preview.1.24081.5"
-- xUnit (2.6.6)
 - C#
 - ASP.NET Core
 - Azure
@@ -26,14 +31,33 @@ The goal of this project is to establish a network test with 4 buttons that:
 - Azure Key Vault (for secrets management)
 - Azure App Service (for hosting)
 
-# Tech Stack - Frontend
-
+## Tech Stack - Frontend
 - Vite
 - React
 - TypeScript
-- Playwright
 
+## Testing
+- Playwright for API and end-to-end testing
 
-# Frontend website
+## Running the Application
 
+### Backend
+```
+cd Backend
+dotnet run
+```
+
+### Frontend
+```
+cd Frontend
+npm run dev
+```
+
+### Running Tests
+```
+cd Backend
+npx playwright test
+```
+
+## Frontend website
 https://budget-tool-frontend-dububsc9aeezgjf0.uksouth-01.azurewebsites.net/
