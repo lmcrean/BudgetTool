@@ -1,0 +1,14 @@
+{
+  "name": "budgettool2-backend-tests",
+  "version": "1.0.0",
+  "description": "API tests for BudgetTool2 backend",
+  "scripts": {
+    "test": "playwright test",
+    "test:debug": "playwright test --debug"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.50.1",
+    "@types/node": "^20.11.16",
+    "typescript": "~5.3.3"
+  }
+} 
