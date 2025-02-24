@@ -238,3 +238,7 @@ _Pvt_Extensions
 
 # images
 *.png
+
+Backend/node_modules/
+Backend/playwright-report/*
+Backend/test-results/*
