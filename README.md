@@ -14,7 +14,8 @@ The goal of this project is to establish a network test with 4 buttons that:
 
 # Tech Stack - Backend
 
-- .NET 7
+- .NET 7.0 (7.0.15 or latest 7.0.x)
+- xUnit (2.6.6)
 - C#
 - ASP.NET Core
 - Azure
