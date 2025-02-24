@@ -13,8 +13,9 @@ The goal of this project is to establish a network test with 4 buttons that:
 
 
 # Tech Stack - Backend
-
-- .NET 7.0 (7.0.15 or latest 7.0.x)
+- .NET 9.0 (9.0.0-preview.1.24081.5)
+   - Microsoft.AspNetCore.SpaProxy Version="9.0.0-preview.1.24081.5"
+   - Microsoft.AspNetCore.SpaServices.Extensions Version="9.0.0-preview.1.24081.5"
 - xUnit (2.6.6)
 - C#
 - ASP.NET Core
