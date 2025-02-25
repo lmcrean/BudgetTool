@@ -242,3 +242,5 @@ _Pvt_Extensions
 Backend/node_modules/
 Backend/playwright-report/*
 Backend/test-results/*
+
+.jsonview
