@@ -17,6 +17,15 @@ export default defineConfig({
     {
       name: 'api-testing',
       testMatch: /.*\.spec\.ts/,
+      testIgnore: /.*prod-api\.spec\.ts/,
+    },
+    {
+      name: 'prod-api-testing',
+      testMatch: /.*prod-api\.spec\.ts/,
+      use: {
+        // For production tests, we don't need a baseURL as we use the full URL in the tests
+        baseURL: '',
+      },
     },
   ],
 }); 
