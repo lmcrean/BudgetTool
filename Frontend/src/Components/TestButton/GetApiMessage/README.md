@@ -35,22 +35,39 @@ Located in `__Tests__/Prod/` directory, these tests ensure the component works p
 
 ### Playwright Tests
 
-To run the Playwright e2e tests, first start the backend server:
+You have two options for running the end-to-end tests:
+
+#### Option 1: Helper Script (Recommended)
+
+Use the provided helper script that handles everything for you:
 
 ```powershell
-cd ../Backend; Start-Process dotnet -ArgumentList "run" -WindowStyle Minimized; cd ../Frontend
+.\start-backend-and-test.ps1
 ```
 
-Then run the Playwright tests:
+This script will:
+1. Stop any existing backend processes
+2. Start the backend server in a minimized window
+3. Run the Playwright tests
+4. Ask if you want to keep the backend running after the tests
 
+#### Option 2: Manual Steps
+
+For more control, follow these steps manually:
+
+1. First, start the backend API server:
+```powershell
+cd ../Backend; dotnet run
+```
+
+2. Then, in a new terminal window, run the Playwright tests:
 ```powershell
 npx playwright test
 ```
 
-This will:
-1. Use the running backend server
-2. Start the frontend dev server automatically
-3. Execute the Playwright tests against both servers
+The Playwright configuration will:
+- Start the frontend dev server automatically
+- Run the tests against the already running backend server
 
 ### Unit Tests
 
