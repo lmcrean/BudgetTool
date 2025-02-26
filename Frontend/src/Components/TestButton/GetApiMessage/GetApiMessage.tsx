@@ -9,14 +9,17 @@ const GetApiMessage: React.FC = () => {
     const fetchApiMessage = async () => {
         setIsLoading(true);
         setError('');
+        console.log('Fetching API message from:', `${import.meta.env.VITE_API_URL}/api/status`);
         try {
             const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/status`);
+            console.log('API response received:', response.data);
             setMessage(response.data);
         } catch (err) {
-            setError('Failed to fetch API message');
             console.error('Error fetching API message:', err);
+            setError('Failed to fetch API message');
         } finally {
             setIsLoading(false);
+            console.log('API request completed. Message:', message, 'Error:', error);
         }
     };
 
