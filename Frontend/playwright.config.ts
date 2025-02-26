@@ -8,11 +8,21 @@ import { defineConfig, devices } from '@playwright/test';
 // import path from 'path';
 // dotenv.config({ path: path.resolve(__dirname, '.env') });
 
+// For process environment variables
+declare const process: {
+  env: {
+    CI?: string;
+    [key: string]: string | undefined;
+  };
+};
+
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  testDir: './e2e',
+  testDir: './src',
+  /* Match only files with Dev.spec.ts pattern */
+  testMatch: '**/__Tests__/**/Dev.spec.ts',
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
