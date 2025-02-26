@@ -16,7 +16,7 @@ env:
 
 jobs:
   build-and-deploy:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     permissions:
       contents: read
 
@@ -40,14 +40,14 @@ jobs:
 
     - name: Copy web.config to dist
       working-directory: ./Frontend
-      run: Copy-Item web.config dist/
+      run: cp web.config dist/
 
     - name: Prepare Frontend for Deployment
       working-directory: ./Frontend
       run: |
-        Copy-Item package.json dist/
-        Copy-Item package-lock.json dist/
-        New-Item -Path dist/server.js -ItemType File -Value @'
+        cp package.json dist/
+        cp package-lock.json dist/
+        cat > dist/server.js << 'EOL'
         const express = require('express');
         const path = require('path');
         const app = express();
@@ -62,7 +62,7 @@ jobs:
         app.listen(port, () => {
           console.log(`Server running on port ${port}`);
         });
-        '@
+        EOL
     
     - name: Install Express for Server
       working-directory: ./Frontend/dist
@@ -70,8 +70,7 @@ jobs:
       
     - name: Zip Frontend Artifact
       working-directory: ./Frontend
-      run: |
-        Compress-Archive -Path dist/* -DestinationPath frontend-deploy.zip -Force
+      run: zip -r frontend-deploy.zip dist/*
       
     - name: Azure CLI Login
       uses: azure/CLI@v1
