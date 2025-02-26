@@ -10,14 +10,15 @@ on:
 
 env:
   NODE_VERSION: '20.x'
-  AZURE_WEBAPP_FRONTEND_NAME: 'budget-tool-frontend'
+  AZURE_WEBAPP_NAME: 'budget-tool-frontend'
+  AZURE_RESOURCE_GROUP: 'budget-tool-frontend_group'
+  AZURE_SUBSCRIPTION_ID: 'aa57f162-6844-4d68-af99-9b89e78d2bdd'
 
 jobs:
   build-and-deploy:
     runs-on: windows-latest
     permissions:
       contents: read
-      id-token: write
 
     steps:
     - uses: actions/checkout@v4
@@ -72,19 +73,18 @@ jobs:
       run: |
         Compress-Archive -Path dist/* -DestinationPath frontend-deploy.zip -Force
       
-    - name: Login to Azure
-      uses: azure/login@v2
+    - name: Azure CLI Login
+      uses: azure/CLI@v1
       with:
-        client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_4A72AE0249ED4026BC6AE1953F51C3CF }}
-        tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_84747220A89A4ABA929882948E7DD949 }}
-        subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_25ADDA71426C444CBCB32D8CCFB743A8 }}
+        inlineScript: |
+          az login --service-principal -u ${{ secrets.AZURE_APP_ID }} -p ${{ secrets.AZURE_PASSWORD }} --tenant ${{ secrets.AZURE_TENANT_ID }}
+          az account set --subscription ${{ env.AZURE_SUBSCRIPTION_ID }}
 
-    - name: Deploy Frontend to Azure
-      id: deploy-frontend
-      uses: azure/webapps-deploy@v3
+    - name: Deploy to Azure Web App
+      uses: azure/webapps-deploy@v2
       with:
-        app-name: ${{ env.AZURE_WEBAPP_FRONTEND_NAME }}
-        slot-name: 'Production'
+        app-name: ${{ env.AZURE_WEBAPP_NAME }}
+        resource-group: ${{ env.AZURE_RESOURCE_GROUP }}
         package: ./Frontend/frontend-deploy.zip
         
     - name: Logout from Azure
