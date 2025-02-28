@@ -16,7 +16,7 @@ env:
 
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     permissions:
       contents: read
 
@@ -40,14 +40,14 @@ jobs:
 
     - name: Copy web.config to dist
       working-directory: ./Frontend
-      run: cp web.config dist/
+      run: Copy-Item web.config dist/
 
     - name: Prepare Frontend for Deployment
       working-directory: ./Frontend
       run: |
-        cp package.json dist/
-        cp package-lock.json dist/
-        cat > dist/server.js << 'EOL'
+        Copy-Item package.json dist/
+        Copy-Item package-lock.json dist/
+        New-Item -Path dist/server.js -ItemType File -Value @'
         const express = require('express');
         const path = require('path');
         const app = express();
@@ -62,7 +62,7 @@ jobs:
         app.listen(port, () => {
           console.log(`Server running on port ${port}`);
         });
-        EOL
+        '@
     
     - name: Install Express for Server
       working-directory: ./Frontend/dist
@@ -70,14 +70,15 @@ jobs:
       
     - name: Zip Frontend Artifact
       working-directory: ./Frontend
-      run: zip -r frontend-deploy.zip dist/*
+      run: Compress-Archive -Path dist/* -DestinationPath frontend-deploy.zip -Force
       
-    - name: Azure CLI Login
-      uses: azure/CLI@v1
+    - name: Azure PowerShell Login
+      uses: azure/powershell@v1
       with:
+        azPSVersion: 'latest'
         inlineScript: |
-          az login --service-principal -u ${{ secrets.AZURE_APP_ID }} -p ${{ secrets.AZURE_PASSWORD }} --tenant ${{ secrets.AZURE_TENANT_ID }}
-          az account set --subscription ${{ env.AZURE_SUBSCRIPTION_ID }}
+          Connect-AzAccount -ServicePrincipal -TenantId ${{ secrets.AZURE_TENANT_ID }} -ApplicationId ${{ secrets.AZURE_APP_ID }} -Credential (New-Object System.Management.Automation.PSCredential (${{ secrets.AZURE_APP_ID }}, (ConvertTo-SecureString ${{ secrets.AZURE_PASSWORD }} -AsPlainText -Force)))
+          Set-AzContext -SubscriptionId ${{ env.AZURE_SUBSCRIPTION_ID }}
 
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
@@ -87,5 +88,9 @@ jobs:
         package: ./Frontend/frontend-deploy.zip
         
     - name: Logout from Azure
-      run: az logout
-      if: always() 
+      if: always()
+      uses: azure/powershell@v1
+      with:
+        azPSVersion: 'latest'
+        inlineScript: |
+          Disconnect-AzAccount 
